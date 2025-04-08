@@ -3,49 +3,30 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    devshell.url = "github:numtide/devshell";
   };
 
-  outputs =
-    inputs@{ self, nixpkgs, ... }:
-    inputs.flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-      in
-      {
-        devShells = {
-          default = pkgs.mkShell {
-            shellHook = ''
-              ${pkgs.figlet}/bin/figlet -f big -w 200 "Development Shell" | ${pkgs.lolcat}/bin/lolcat
-            '';
-          };
+  outputs = inputs@{ flake-parts, ... }: flake-parts.lib.mkFlake { inherit inputs; } ({ ... }: {
+    imports = [
+      inputs.devshell.flakeModule
+    ];
 
-          nodejs-18 = import ./shells/nodejs.nix {
-            inherit pkgs;
-            version = 18;
-          };
-          nodejs-20 = import ./shells/nodejs.nix {
-            inherit pkgs;
-            version = 20;
-          };
-          nodejs-22 = import ./shells/nodejs.nix {
-            inherit pkgs;
-            version = 22;
-          };
+    systems = [
+      # systems for which you want to build the `perSystem` attributes
+      "aarch64-darwin"
+      "aarch64-linux"
+      "x86_64-darwin"
+      "x86_64-linux"
+    ];
 
-          nodejs-lts = self.devShells.${system}.nodejs-20;
-          nodejs = self.devShells.${system}.nodejs-lts;
-
-          go = pkgs.mkShell {
-            packages = with pkgs; [ ];
-            nativeBuildInputs = with pkgs; [ go ];
-            buildInputs = with pkgs; [ gopls ];
-            shellHook = ''
-              go version
-            '';
-          };
-        };
-      }
-    );
+    perSystem = { config, pkgs, ... }: {
+      imports = [
+        ./shells/bun.nix
+        ./shells/go.nix
+        ./shells/laravel.nix
+        ./shells/nodejs.nix
+      ];
+    };
+  });
 }
