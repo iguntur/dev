@@ -5,6 +5,7 @@ let
       yarn
       pnpm
       nodemon
+      typescript
     ]
     ++ lib.optionals (version == 18) [ nodejs_18 ]
     ++ lib.optionals (version == 20) [ nodejs_20 ]
