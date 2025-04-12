@@ -26,6 +26,7 @@
         ./shells/go.nix
         ./shells/laravel.nix
         ./shells/nodejs.nix
+        ./shells/python.nix
       ];
     };
   });
