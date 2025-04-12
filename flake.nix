@@ -24,6 +24,7 @@
       imports = [
         ./shells/bun.nix
         ./shells/go.nix
+        ./shells/jupyterlab.nix
         ./shells/laravel.nix
         ./shells/nodejs.nix
         ./shells/python.nix
