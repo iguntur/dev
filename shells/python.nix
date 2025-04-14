@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 {
-  devshells.python = {
+  devShells.python = pkgs.mkShell {
     packages = with pkgs; [
       python313 # High-level dynamically-typed programming language
 

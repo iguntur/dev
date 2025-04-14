@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  mkNode = { version ? 22 }: {
+  mkNode = { version ? 22 }: pkgs.mkShell {
     packages = with pkgs; [
       yarn
       pnpm
@@ -14,7 +14,7 @@ let
   };
 in
 {
-  devshells = rec {
+  devShells = rec {
     nodejs-18 = mkNode { version = 18; };
     nodejs-20 = mkNode { version = 20; };
     nodejs-22 = mkNode { version = 22; };

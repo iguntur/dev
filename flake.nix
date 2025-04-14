@@ -4,16 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    devshell.url = "github:numtide/devshell";
   };
 
   outputs = inputs@{ flake-parts, ... }: flake-parts.lib.mkFlake { inherit inputs; } ({ ... }: {
-    imports = [
-      inputs.devshell.flakeModule
-    ];
-
     systems = [
-      # systems for which you want to build the `perSystem` attributes
       "aarch64-darwin"
       "aarch64-linux"
       "x86_64-darwin"
@@ -22,6 +16,8 @@
 
     perSystem = { config, pkgs, ... }: {
       imports = [
+        ./shells/c.nix
+        ./shells/cpp.nix
         ./shells/bun.nix
         ./shells/go.nix
         ./shells/jupyterlab.nix

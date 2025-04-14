@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 {
-  devshells.jupyter = {
+  devShells.jupyter = pkgs.mkShell {
     packages = with pkgs; [
       (pkgs.python313.withPackages (p: with p; [
         jupyterlab
