@@ -24,6 +24,7 @@
         ./shells/laravel.nix
         ./shells/nodejs.nix
         ./shells/python.nix
+        ./shells/postgresql.nix
       ];
     };
   });
